@@ -145,7 +145,6 @@ static void drm_reset_vblank_timestamp(struct drm_device *dev, unsigned int pipe
  * Note: caller must hold dev->vbl_lock since this reads & writes
  * device vblank fields.
  */
-int debug_mask=0;
 static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 				    unsigned long flags)
 {
@@ -213,13 +212,11 @@ static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 			      " due to pre-modeset.\n", pipe, diff);
 		diff = 1;
 	}
-	if(debug_mask == 0xff) {
+
 	DRM_DEBUG_VBL("updating vblank count on crtc %u:"
 		      " current=%u, diff=%u, hw=%u hw_last=%u\n",
 		      pipe, vblank->count, diff, cur_vblank, vblank->last);
-	debug_mask =0;
-	}
-	debug_mask ++;
+
 	if (diff == 0) {
 		WARN_ON_ONCE(cur_vblank != vblank->last);
 		return;
@@ -1143,7 +1140,7 @@ static int drm_vblank_get(struct drm_device *dev, unsigned int pipe)
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 	unsigned long irqflags;
 	int ret = 0;
-	printk("hxy num_crtcs %d \n",dev->num_crtcs);
+
 	if (!dev->num_crtcs)
 		return -EINVAL;
 
